@@ -1,0 +1,70 @@
+{% extends "social/base.html" %}
+{% load static %}
+
+{% block content %}
+    {% include 'social/components/profile.html' %}
+    <div class='h5 mt-4'>
+        Edit profile your profile here !
+    </div>
+    <form id='upload_form' method='POST' action="{% url 'social:profile' %}" enctype='multipart/form-data'>
+        <div class='form-group'>
+            {% csrf_token %}
+            <input type="file" id="img_file" style="display:none;">
+
+            <label">First Name</label>
+            <input class="form-control" name='text'></input>
+
+            <label">Second Name</label>
+            <input class="form-control" name='text'></input>
+
+            <label">E-mail</label>
+            <input class="form-control" name='email'></input>
+
+            <label for="dob">Date of birth:</label><br>
+            <input type="date" id="birthday" name="date"><br>
+            
+            <label">Location</label>
+            <input class="form-control" name='city'></input>
+
+            <label for="inputState">Hobbies</label>
+                <select id="inputState" class="form-control" name="hobbies">
+                    <option selected>Choose...</option>
+                    <option>Gaming</option>
+                    <option>Football</option>
+                    <option>Chess</option>
+                    <option>Basketball</option>
+            </select>
+            <button type='submit' class="btn btn-danger mt-3">Save</button><br>
+        </div>
+    </form>
+{% endblock %}
+
+
+{% block scripts %}
+    <script>
+        $(function () {
+            // connecting click on profile image with click on upload file button
+            $('#profile-img').click(function() {
+                console.log('Uploading image...')
+                $("#img_file").click()
+            });
+
+            $('#img_file').change(function uploadFile() {
+                var formdata = new FormData()
+                var file = document.getElementById('img_file').files[0]
+                formdata.append('img_file', file)
+                formdata.append('csrfmiddlewaretoken', $('input[name=csrfmiddlewaretoken]').val())
+                $.ajax({
+                    type : 'POST',
+                    url  : "{% url 'social:uploadimage' %}",
+                    data : formdata,
+                    success: function(data) {
+                        $('#profile-img').attr("src",data);
+                    },
+                    processData : false,
+                    contentType : false,
+                })
+            })
+        })
+    </script>
+{% endblock %}

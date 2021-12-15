@@ -1,0 +1,23 @@
+{% extends "social/base.html" %}
+    {% block content %}
+    <br>
+        <table class="table table-hover table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Hobby</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in hobbies %}
+                <tr>
+                    <th scope="row">
+                        {{ i.id }}
+                    </th>
+                    <td>{{ i.hobby_name }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% endblock %}

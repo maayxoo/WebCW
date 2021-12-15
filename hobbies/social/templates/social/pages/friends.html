@@ -1,0 +1,30 @@
+{% extends "social/base.html" %}
+
+{% block content %}
+    <div class='h3 mt-4 text-center'>
+        Following / Followers
+    </div>
+    <div class='card border rounded bg-light mb-3 p-3'>
+        {% if user.followers.all %}
+            <div class='h5 pt-2'>
+                Your followers
+            </div>
+            <ul>
+            {% for member in user.followers.all %}
+                <li> <a href="{% url 'social:messages' %}?view={{member.username}}"> {{member.username}} </a>
+            {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if user.following.all %}
+            <div class='h5 pt-2'>
+            You are following
+            </div>
+            <ul>
+            {% for member in user.following.all %}
+                <li> <a href="{% url 'social:messages' %}?view={{ member.username }}"> {{ member.username }} </a>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+{% endblock %}
